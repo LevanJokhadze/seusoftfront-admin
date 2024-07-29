@@ -1,30 +1,49 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from '../layout/Navbar';
 import Settings from '../pages/settings/settings';
 import Dashboard
  from '../pages/dashboard/Dashboard';
 import '../../styles/main.css';
+import Login from '../Auth/Login';
+import Cookies from 'js-cookie';
 
-const Main = () => {
-
+const main = ()=> {
   return (
-    <Router>
-      <div>
-        <Navbar />
-        <div id="main">
-        <div className="mainContent">
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/" element={<Dashboard />} />
-          </Routes>
-        </div>
-        </div>
-      </div>
-    </Router>
-
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/*"
+        element={
+          <ProtectedRoutes>
+            <div>
+              <Navbar />
+              <div id="main">
+                <div className="mainContent">
+                  <Routes>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  </Routes>
+                </div>
+              </div>
+            </div>
+          </ProtectedRoutes>
+        }
+      />
+    </Routes>
   );
-};
+}
 
-export default Main;
+// This is a wrapper component to protect routes
+function ProtectedRoutes({ children }) {
+  const authToken = Cookies.get('token');
+
+  if (!authToken) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+export default main;

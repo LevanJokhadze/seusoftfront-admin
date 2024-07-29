@@ -1,0 +1,22 @@
+.txt {
+    text-align: center;
+  }
+  
+  .form {
+    margin: 40px auto;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .Loginput {
+    margin-bottom: 20px;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .Logbutton {
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
