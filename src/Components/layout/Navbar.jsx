@@ -28,7 +28,7 @@ const Navbar = () => {
         </span>
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/contacts">Contacts</Link>
-        <Link to="/profile">Profile</Link>
+        <Link to="/uContacts">Ucontacts</Link>
         <Link onClick={HandleLogout}>Logout</Link>
       </div>
     </div>

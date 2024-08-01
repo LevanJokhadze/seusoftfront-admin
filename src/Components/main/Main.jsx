@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from '../layout/Navbar';
 import Contacts from '../pages/contacts/Contacts';
+import Ucontacts from '../pages/uContacts/Ucontacts';
 import Dashboard
  from '../pages/dashboard/Dashboard';
 import '../../styles/main.css';
@@ -23,6 +24,7 @@ const main = ()=> {
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/contacts" element={<Contacts />} />
+                    <Route path="/uContacts" element={<Ucontacts />} />
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                   </Routes>
                 </div>
