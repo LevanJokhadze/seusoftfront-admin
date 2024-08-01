@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import ItemForm from './ItemForm';
 import './Dashboard.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_KEY;
+const API_BASE_URL_Web = process.env.REACT_APP_API_Web;
 const API_ADMIN_URL = process.env.REACT_APP_API_KEY_ADMIN;
 
 const getToken = () => {
-  return Cookies.get('token'); 
+  return Cookies.get('token');
 };
 
 // Axios instance with default headers
@@ -30,177 +31,6 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
-  const [type, setType] = useState(item?.type === 2);
-  const [formData, setFormData] = useState({
-    title: item?.title || '',
-    body: item?.body || '',
-    titles: item?.titles || [''],
-    images: item?.images || [null]
-  });
-
-  const handleTypeChange = () => setType(!type);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleTitleChange = (index, value) => {
-    setFormData(prev => {
-      const newTitles = [...prev.titles];
-      newTitles[index] = value;
-      return { ...prev, titles: newTitles };
-    });
-  };
-
-  const handleFileChange = (index, file) => {
-    setFormData(prev => {
-      const newImages = [...prev.images];
-      newImages[index] = file;
-      return { ...prev, images: newImages };
-    });
-  };
-
-  const handleEditorChange = (content) => {
-    setFormData(prev => ({ ...prev, body: content }));
-  };
-
-  const addItem = () => {
-    setFormData(prev => ({
-      ...prev,
-      titles: [...prev.titles, ''],
-      images: [...prev.images, null]
-    }));
-  };
-
-  const removeItem = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      titles: prev.titles.filter((_, i) => i !== index),
-      images: prev.images.filter((_, i) => i !== index)
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        const formDataToSend = new FormData();
-        formDataToSend.append('type', type ? '2' : '1');
-        formDataToSend.append('title', formData.title);
-
-        if (!type) {
-            formDataToSend.append('body', formData.body);
-        } else {
-            formDataToSend.append('titles', JSON.stringify(formData.titles));
-            formData.images.forEach((file, index) => {
-                if (file instanceof File) {
-                    formDataToSend.append(`images[${index}]`, file);
-                }
-            });
-        }
-
-        if (isEditMode) {
-            formDataToSend.append('id', item.id);
-        }
-        
-        const url = isEditMode 
-            ? `${API_ADMIN_URL}edit-product/${item.id}`
-            : `${API_ADMIN_URL}store-product`;
-        
-        const method = isEditMode ? 'put' : 'post';
-        
-        const token = getToken();
-        const response = await axiosInstance[method](url, formDataToSend, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${token}`
-            },
-        });
-        console.log('Data sent:', formDataToSend);
-        console.log('Response from server:', response.data);
-        onSubmit(response.data);
-    } catch (error) {
-        console.error('Error sending data:', error);
-    }
-};
-
-
-  return (
-    <form onSubmit={handleSubmit} className="item-form">
-      <div className="form-group">
-        <label htmlFor="typeCheckbox">Multiple Items</label>
-        <input 
-          type="checkbox" 
-          checked={type}
-          onChange={handleTypeChange}
-          id="typeCheckbox"
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          placeholder="Main Title"
-          required
-        />
-      </div>
-      {!type ? (
-        <div className="form-group">
-          <Editor
-          apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
-            value={formData.body}
-          init={{
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
-            mergetags_list: [
-              { value: 'First.Name', title: 'First Name' },
-              { value: 'Email', title: 'Email' },
-            ],
-            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-          }}
-          onEditorChange={handleEditorChange}
-          onInit={(evt, editor) => {
-            console.log('Editor is ready to use!', editor);
-          }}
-        />
-        </div>
-      ) : (
-        <div className="multi-item-container">
-          {formData.titles.map((title, index) => (
-            <div key={index} className="multi-item">
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => handleTitleChange(index, e.target.value)}
-                placeholder={`Title ${index + 1}`}
-                required
-              />
-              <input 
-                type="file" 
-                onChange={(e) => handleFileChange(index, e.target.files[0])}
-                id={`fileUpload-${index}`}
-              />
-              <label htmlFor={`fileUpload-${index}`}>Choose file</label>
-              {formData.images[index] && <span>{formData.images[index].name}</span>}
-              <button type="button" onClick={() => removeItem(index)}>Remove</button>
-            </div>
-          ))}
-          <button type="button" onClick={addItem} className="add-item-btn">Add Item</button>
-        </div>
-      )}
-      <div className="form-actions">
-        <button type="submit">{isEditMode ? 'Update Item' : 'Add Item'}</button>
-        <button type="button" onClick={onCancel}>Cancel</button>
-      </div>
-    </form>
-  );
-};
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -282,7 +112,7 @@ const Dashboard = () => {
                     <div key={index} className="multi-item">
                       <h3>{title}</h3>
                       {item.images && item.images[index] && (
-                        <img src={item.images[index]} alt={title} />
+                        <img src={`${API_BASE_URL_Web}${item.images[index]}`} alt={title} />
                       )}
                     </div>
                   ))}
