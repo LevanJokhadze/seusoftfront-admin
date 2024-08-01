@@ -1,0 +1,82 @@
+.dashboard {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .item-list {
+    margin-bottom: 20px;
+  }
+  
+  .item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+  
+  .item h2 {
+    margin-top: 0;
+  }
+  
+  .multi-item-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .multi-item {
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .item-actions {
+    margin-top: 10px;
+  }
+  
+  .item-actions button {
+    margin-right: 10px;
+  }
+  
+  .toggle-form-btn {
+    margin-bottom: 20px;
+  }
+  
+  .item-form {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
+  .multi-item-container {
+    margin-top: 15px;
+  }
+  
+  .add-item-btn {
+    margin-top: 10px;
+  }
+  
+  .form-actions {
+    margin-top: 20px;
+  }
+  
+  .form-actions button {
+    margin-right: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    margin-bottom: 15px;
+  }
