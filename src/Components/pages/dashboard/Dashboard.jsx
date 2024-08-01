@@ -86,38 +86,46 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = new FormData();
-      data.append('type', type ? 2 : 1);
-      data.append('title', formData.title);
-      
-      if (!type) {
-        data.append('body', formData.body);
-      } else {
-        formData.titles.forEach((title, index) => {
-          data.append(`titles[${index}]`, title);
-          if (formData.images[index]) {
-            data.append(`images[${index}]`, formData.images[index]);
-          }
+        const formDataToSend = new FormData();
+        formDataToSend.append('type', type ? '2' : '1');
+        formDataToSend.append('title', formData.title);
+
+        if (!type) {
+            formDataToSend.append('body', formData.body);
+        } else {
+            formDataToSend.append('titles', JSON.stringify(formData.titles));
+            formData.images.forEach((file, index) => {
+                if (file instanceof File) {
+                    formDataToSend.append(`images[${index}]`, file);
+                }
+            });
+        }
+
+        if (isEditMode) {
+            formDataToSend.append('id', item.id);
+        }
+        
+        const url = isEditMode 
+            ? `${API_ADMIN_URL}edit-product/${item.id}`
+            : `${API_ADMIN_URL}store-product`;
+        
+        const method = isEditMode ? 'put' : 'post';
+        
+        const token = getToken();
+        const response = await axiosInstance[method](url, formDataToSend, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            },
         });
-      }
-      
-      const url = isEditMode 
-        ? `${API_ADMIN_URL}update-product/${item.id}`
-        : `${API_ADMIN_URL}store-product`;
-      
-      const method = isEditMode ? 'put' : 'post';
-      
-      const response = await axiosInstance[method](url, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('Response from server:', response.data);
-      onSubmit(response.data);
+        console.log('Data sent:', formDataToSend);
+        console.log('Response from server:', response.data);
+        onSubmit(response.data);
     } catch (error) {
-      console.error('Error sending data:', error);
+        console.error('Error sending data:', error);
     }
-  };
+};
+
 
   return (
     <form onSubmit={handleSubmit} className="item-form">
