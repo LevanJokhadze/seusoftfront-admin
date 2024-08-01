@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/navbar.css';
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -8,6 +9,11 @@ const Navbar = () => {
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
+
+  const HandleLogout = () => {
+    Cookies.remove('token');
+    window.location.href = "http://localhost:3000/";
+  }
 
   return (
     <div>
@@ -21,9 +27,9 @@ const Navbar = () => {
           &times;
         </span>
         <Link to="/dashboard">Dashboard</Link>
-        <Link to="/settings">Settings</Link>
+        <Link to="/contacts">Contacts</Link>
         <Link to="/profile">Profile</Link>
-        <Link to="/logout">Logout</Link>
+        <Link onClick={HandleLogout}>Logout</Link>
       </div>
     </div>
   );

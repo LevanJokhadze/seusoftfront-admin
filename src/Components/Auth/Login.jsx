@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import axios from "axios"; // Make sure to install axios: npm install axios
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -23,8 +24,6 @@ function Login() {
       }
       if (isScriptExist && callback) callback();
     }
-
-    // load the script by passing the URL
     loadScriptByURL("recaptcha-key", `https://www.google.com/recaptcha/api.js?render=${process.env.REACT_APP_SITE_KEY}`, function () {
       console.log("Script loaded!");
     });
@@ -34,18 +33,34 @@ function Login() {
     event.preventDefault();
     try {
       window.grecaptcha.ready(() => {
-        window.grecaptcha.execute(process.env.REACT_APP_SITE_KEY, { action: 'submit' }).then(token => {
-          // Send the token to your server along with the form data
+        window.grecaptcha.execute(process.env.REACT_APP_SITE_KEY, { action: 'submit' }).then(async token => {
           console.log("reCAPTCHA token:", token);
-          console.log("Form submission successful!");
+          
+          // Send email, password, and reCAPTCHA token to backend
+          try {
+            const response = await axios.post(`${process.env.REACT_APP_API_KEY_ADMIN}login`, {
+              email,
+              password,
+              recaptcha_token: token
+            });
 
-          Cookies.set("token", token, {
-            secure: true,
-            sameSite: "strict",
-          });
-          navigate("/dashboard");
+            console.log("Login response:", response.data);
 
-          // Here you would typically send the form data and token to your server
+            if (response.data.success) {
+              // Assuming the backend sends a token upon successful login
+              Cookies.set("token", response.data.access_token, {
+                secure: true,
+                sameSite: "strict",
+              });
+              navigate("/dashboard");
+            } else {
+              // Handle login failure (e.g., show error message)
+              console.error("Login failed:", response.data.message);
+            }
+          } catch (error) {
+            console.error("Error during login:", error);
+            // Handle error (e.g., show error message to user)
+          }
         });
       });
     } catch (error) {
