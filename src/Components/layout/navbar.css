@@ -1,0 +1,74 @@
+/* Style for the burger menu button */
+.burger-menu {
+    font-size: 24px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+  }
+  
+  /* Navbar styles */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #333;
+    color: #fff;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+  }
+  
+  .navbar.open {
+    width: 250px;
+  }
+  
+  .navbar.closed {
+    width: 0;
+  }
+  
+  /* Close button styles */
+  .close-btn {
+    font-size: 36px;
+    color: #fff;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+  }
+  
+  /* Style for links */
+  .navbar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #fff;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  /* Hover effect */
+  .navbar a:hover {
+    background-color: #575757;
+  }
+  
+  /* Active link styles */
+  .navbar .active-link {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .itemNav {
+    display: flex;
+    border: none;
+    align-items: center;
+  }
+
+  .navIcons {
+    padding-right: 10px;
+    width: 30px;
+    height: 30px;
+  }

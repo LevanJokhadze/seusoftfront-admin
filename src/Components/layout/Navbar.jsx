@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../../styles/navbar.css';
-import Cookies from "js-cookie";
+import { NavLink } from 'react-router-dom';
+import './navbar.css';
+import Cookies from 'js-cookie';
+import dashboardIcon from "../../assets/navbar/dashboard.png";
+import contactsIcon from "../../assets/navbar/contacts.png";
+import logoutIcon from "../../assets/navbar/logout.png";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false); // Start with the navbar closed
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -12,24 +15,60 @@ const Navbar = () => {
 
   const HandleLogout = () => {
     Cookies.remove('token');
-    window.location.href = "http://localhost:3000/";
-  }
+    window.location.href = 'http://localhost:3000/';
+  };
 
   return (
     <div>
       <div id="main" style={{ marginLeft: isOpen ? '250px' : '0' }}>
-        <button onClick={toggleNavbar}>
-          {isOpen ? 'Close' : 'Open'} Navbar
+        <button className="burger-menu" onClick={toggleNavbar} style={{ display: isOpen ? 'none' : 'block' }}>
+          {isOpen ? '' : '☰'}
         </button>
       </div>
-      <div className="navbar" style={{ width: isOpen ? '250px' : '0' }}>
+      <div className={`navbar ${isOpen ? 'open' : 'closed'}`} style={{ width: isOpen ? '250px' : '0' }}>
         <span className="close-btn" onClick={toggleNavbar}>
           &times;
         </span>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/contacts">Contacts</Link>
-        <Link to="/uContacts">Ucontacts</Link>
-        <Link onClick={HandleLogout}>Logout</Link>
+        <div className="itemNav">
+        <img src={dashboardIcon} className='navIcons'/>
+        <NavLink 
+          to="/dashboard" 
+          className={({ isActive }) => (isActive ? 'active-link' : '')} 
+          onClick={toggleNavbar}
+        >
+          Dashboard
+        </NavLink>
+        </div>
+
+        <div className="itemNav">
+        <img src={contactsIcon} className='navIcons'/>
+        <NavLink 
+          to="/contacts" 
+          className={({ isActive }) => (isActive ? 'active-link' : '')} 
+          onClick={toggleNavbar}
+        >
+          Contacts
+        </NavLink>
+        </div>
+        <div className="itemNav">
+        <img src={contactsIcon} className='navIcons'/>
+        <NavLink 
+          to="/uContacts" 
+          className={({ isActive }) => (isActive ? 'active-link' : '')} 
+          onClick={toggleNavbar}
+        >
+          Ucontacts
+        </NavLink>
+        </div>
+        <div className="itemNav">
+        <img src={logoutIcon} className='navIcons'/>
+        <NavLink 
+          to="/" 
+          onClick={HandleLogout}
+        >
+          Logout
+        </NavLink>
+        </div>
       </div>
     </div>
   );
