@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
@@ -9,9 +10,13 @@ const Contacts = () => {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_KEY}list-contacts`);
-        console.log(response.data); // Log the response data
-        setContacts(response.data.data); // Access the data property
+        const token = Cookies.get('token')
+        const response = await axios.get(`${process.env.REACT_APP_API_KEY}list-contacts`, {
+          headers:{
+            'Authorization': `Bearer ${token}`
+          }
+        });      
+        setContacts(response.data.data);
         setLoading(false);
       } catch (err) {
         setError(err);
