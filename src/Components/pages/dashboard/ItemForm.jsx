@@ -4,7 +4,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import './Dashboard.css';
 
-const API_BASE_URL = process.env.REACT_APP_API_KEY;
 const API_ADMIN_URL = process.env.REACT_APP_API_KEY_ADMIN;
 
 const getToken = () => {
@@ -106,13 +105,13 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
         titles: JSON.stringify(formData.titles),
         images: JSON.stringify(formData.images),
       };
-      
+  
       const url = isEditMode 
         ? `${API_ADMIN_URL}edit-product/${item.id}`
         : `${API_ADMIN_URL}store-product`;
-      
+  
       const method = isEditMode ? 'put' : 'post';
-      
+  
       const response = await axiosInstance[method](url, data);
       console.log('Response from server:', response.data);
       onSubmit(response.data);
@@ -120,6 +119,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
       console.error('Error sending data:', error);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="item-form">

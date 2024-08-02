@@ -2,10 +2,12 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    width: -webkit-fill-available;
   }
   
   .item-list {
     margin-bottom: 20px;
+    width: 90%;
   }
   
   .item {
@@ -80,3 +82,8 @@
     color: red;
     margin-bottom: 15px;
   }
+
+.im{
+
+  width: 100px;
+}

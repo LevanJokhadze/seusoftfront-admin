@@ -1,0 +1,81 @@
+.contacts-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .contacts-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  .contacts-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .contact-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 500px;
+  }
+  
+  .contact-item p {
+    margin: 10px 0;
+  }
+  
+  .edit-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .edit-form {
+    margin-top: 20px;
+  }
+  
+  .edit-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
+  
+  .save-button {
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .update-error {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .loading, .error {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 50px;
+  }

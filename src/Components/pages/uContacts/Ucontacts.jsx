@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import "./Ucontacts.css"
 
 const Ucontacts = () => {
   const [contacts, setContacts] = useState([]);
@@ -63,62 +64,62 @@ const Ucontacts = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching contacts: {error.message}</div>;
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">Error fetching contacts: {error.message}</div>;
 
   return (
-    <div>
-      <h1>Contacts</h1>
-      <ul>
+    <div className="contacts-container">
+      <h1 className="contacts-title">Contacts</h1>
+      <ul className="contacts-list">
         {contacts.map((contact) => (
-          <li key={contact.id} style={{ marginBottom: '20px' }}>
+          <li key={contact.id} className="contact-item">
             <p>
-              <strong>Title:</strong> {contact.title}
-              <button onClick={() => handleEditClick(contact, 'title')}>Edit</button>
+              <strong>SubTitle: </strong> {contact.title}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'title')}>Edit</button>
             </p>
             <p>
-              <strong>Address:</strong> {contact.address}
-              <button onClick={() => handleEditClick(contact, 'address')}>Edit</button>
+              <strong>Address: </strong> {contact.address}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'address')}>Edit</button>
             </p>
             <p>
-              <strong>Email:</strong> {contact.email}
-              <button onClick={() => handleEditClick(contact, 'email')}>Edit</button>
+              <strong>Email: </strong> {contact.email}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'email')}>Edit</button>
             </p>
             <p>
-              <strong>Number:</strong> {contact.number}
-              <button onClick={() => handleEditClick(contact, 'number')}>Edit</button>
+              <strong>Number: </strong> {contact.number}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'number')}>Edit</button>
             </p>
             <p>
-              <strong>FB:</strong> {contact.fb}
-              <button onClick={() => handleEditClick(contact, 'fb')}>Edit</button>
+              <strong>Facebook: </strong> {contact.fb}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'fb')}>Edit</button>
             </p>
             <p>
-              <strong>IG:</strong> {contact.ig}
-              <button onClick={() => handleEditClick(contact, 'ig')}>Edit</button>
+              <strong>Instagram: </strong> {contact.ig}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'ig')}>Edit</button>
             </p>
             <p>
-              <strong>Twitter:</strong> {contact.twitter}
-              <button onClick={() => handleEditClick(contact, 'twitter')}>Edit</button>
+              <strong>Twitter: </strong> {contact.twitter}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'twitter')}>Edit</button>
             </p>
             <p>
-              <strong>IN:</strong> {contact.in}
-              <button onClick={() => handleEditClick(contact, 'in')}>Edit</button>
+              <strong>Linkdin: </strong> {contact.in}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'in')}>Edit</button>
             </p>
             <p>
-              <strong>Copyright:</strong> {contact.copyright}
-              <button onClick={() => handleEditClick(contact, 'copyright')}>Edit</button>
+              <strong>Copyright: </strong> {contact.copyright}
+              <button className="edit-button" onClick={() => handleEditClick(contact, 'copyright')}>Edit</button>
             </p>
-            <p><strong>Updated At:</strong> {new Date(contact.updated_at).toLocaleString()}</p>
 
             {editing.id === contact.id && (
-              <div style={{ marginTop: '20px' }}>
+              <div className="edit-form">
                 <input
                   type="text"
                   value={editing.value}
                   onChange={handleInputChange}
+                  className="edit-input"
                 />
-                <button onClick={handleSaveClick}>Save</button>
-                {updateError && <p style={{ color: 'red' }}>{updateError}</p>}
+                <button onClick={handleSaveClick} className="save-button">Save</button>
+                {updateError && <p className="update-error">{updateError}</p>}
               </div>
             )}
           </li>

@@ -112,7 +112,7 @@ const Dashboard = () => {
                     <div key={index} className="multi-item">
                       <h3>{title}</h3>
                       {item.images && item.images[index] && (
-                        <img src={`${API_BASE_URL_Web}${item.images[index]}`} alt={title} />
+                        <img src={`${API_BASE_URL_Web}${item.images[index]}`} alt={title} className="im"/>
                       )}
                     </div>
                   ))}
@@ -123,7 +123,7 @@ const Dashboard = () => {
                 <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
               </div>
             </div>
-          ))
+          ))      
         ) : (
           <p>No items found.</p>
         )}
