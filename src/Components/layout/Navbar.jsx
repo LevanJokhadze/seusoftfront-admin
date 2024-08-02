@@ -61,6 +61,16 @@ const Navbar = () => {
         </NavLink>
         </div>
         <div className="itemNav">
+        <img src={contactsIcon} className='navIcons'/>
+        <NavLink 
+          to="/footer" 
+          className={({ isActive }) => (isActive ? 'active-link' : '')} 
+          onClick={toggleNavbar}
+        >
+          Footer
+        </NavLink>
+        </div>
+        <div className="itemNav">
         <img src={logoutIcon} className='navIcons'/>
         <NavLink 
           to="/" 
