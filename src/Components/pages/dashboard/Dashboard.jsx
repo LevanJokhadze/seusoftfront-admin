@@ -94,6 +94,7 @@ const Dashboard = () => {
   };
 
   return (
+    
     <div className="dashboard">
       <h1>Dashboard</h1>
       {error && <div className="error-message">{error}</div>}
