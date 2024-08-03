@@ -30,7 +30,7 @@ const Navbar = () => {
           &times;
         </span>
         <div className="itemNav">
-        <img src={dashboardIcon} className='navIcons'/>
+        <img src={dashboardIcon} className='navIcons' alt='img'/>
         <NavLink 
           to="/dashboard" 
           className={({ isActive }) => (isActive ? 'active-link' : '')} 
@@ -41,7 +41,7 @@ const Navbar = () => {
         </div>
 
         <div className="itemNav">
-        <img src={contactsIcon} className='navIcons'/>
+        <img src={contactsIcon} className='navIcons' alt='img'/>
         <NavLink 
           to="/contacts" 
           className={({ isActive }) => (isActive ? 'active-link' : '')} 
@@ -51,7 +51,7 @@ const Navbar = () => {
         </NavLink>
         </div>
         <div className="itemNav">
-        <img src={contactsIcon} className='navIcons'/>
+        <img src={contactsIcon} className='navIcons' alt='img'/>
         <NavLink 
           to="/uContacts" 
           className={({ isActive }) => (isActive ? 'active-link' : '')} 
@@ -61,7 +61,7 @@ const Navbar = () => {
         </NavLink>
         </div>
         <div className="itemNav">
-        <img src={contactsIcon} className='navIcons'/>
+        <img src={contactsIcon} className='navIcons' alt='img'/>
         <NavLink 
           to="/footer" 
           className={({ isActive }) => (isActive ? 'active-link' : '')} 
@@ -71,7 +71,7 @@ const Navbar = () => {
         </NavLink>
         </div>
         <div className="itemNav">
-        <img src={logoutIcon} className='navIcons'/>
+        <img src={logoutIcon} className='navIcons' alt='img'/>
         <NavLink 
           to="/" 
           onClick={HandleLogout}
