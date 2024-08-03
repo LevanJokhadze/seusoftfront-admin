@@ -3,6 +3,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import ItemForm from "./ItemForm";
 import "./Dashboard.css";
+import { CiEdit } from "react-icons/ci";
+import { MdDeleteOutline } from "react-icons/md";
 
 const API_BASE_URL = process.env.REACT_APP_API_KEY;
 const API_BASE_URL_Web = process.env.REACT_APP_API_Web;
@@ -107,6 +109,18 @@ const Dashboard = () => {
         <button onClick={() => switchLanguage("ge")}>Georgian</button>
       </div>
       {error && <div className="error-message">{error}</div>}
+      <button onClick={toggleFormVisibility} className="toggle-form-btn">
+        {isFormVisible ? "Cancel" : "Add Item"}
+      </button>
+      {isFormVisible && (
+        <ItemForm
+          item={currentItem}
+          onSubmit={isEditMode ? handleUpdateItem : handleAddItem}
+          onCancel={toggleFormVisibility}
+          isEditMode={isEditMode}
+          language={language}
+        />
+      )}
       <div className="item-list">
         {isLoading ? (
           <p>Loading...</p>
@@ -151,10 +165,8 @@ const Dashboard = () => {
                 </div>
               )}
               <div className="item-actions">
-                <button onClick={() => handleEditItem(item)}>Edit</button>
-                <button onClick={() => handleDeleteItem(item.id)}>
-                  Delete
-                </button>
+                <CiEdit className="ed" onClick={() => handleEditItem(item)} />
+               < MdDeleteOutline  className="del" onClick={() => handleDeleteItem(item.id)}/>
               </div>
             </div>
           ))
@@ -162,18 +174,6 @@ const Dashboard = () => {
           <p>No items found.</p>
         )}
       </div>
-      <button onClick={toggleFormVisibility} className="toggle-form-btn">
-        {isFormVisible ? "Cancel" : "Add Item"}
-      </button>
-      {isFormVisible && (
-        <ItemForm
-          item={currentItem}
-          onSubmit={isEditMode ? handleUpdateItem : handleAddItem}
-          onCancel={toggleFormVisibility}
-          isEditMode={isEditMode}
-          language={language}
-        />
-      )}
     </div>
   );
 };

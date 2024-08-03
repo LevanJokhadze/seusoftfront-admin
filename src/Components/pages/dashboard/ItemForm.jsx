@@ -36,13 +36,13 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
   const [type, setType] = useState(1);
   useEffect(() => {
     if (type === 2 && multipleItemsRef.current) {
-      multipleItemsRef.current.scrollIntoView({ behavior: "smooth" });
+      multipleItemsRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     } else {
       setTimeout(() => {
         if (singleItemBodyRef.current) {
-          singleItemBodyRef.current.scrollIntoView({ behavior: "smooth" });
+          singleItemBodyRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
         }
-      }, 300);
+      }, 500);
     }
   }, [type, item]);
   const [formData, setFormData] = useState({
@@ -50,9 +50,9 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
     titleGe: "",
     bodyEn: "",
     bodyGe: "",
-    titlesEn: [''],
-    titlesGe: [''],
-    href: [''],
+    titlesEn: [""],
+    titlesGe: [""],
+    href: [""],
     images: [null],
   });
   const [shouldRenderEditor, setShouldRenderEditor] = useState(type === 1);
@@ -72,9 +72,9 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
         titleGe: item.titleGe || "",
         bodyEn: item.bodyEn || "",
         bodyGe: item.bodyGe || "",
-        titlesEn: item.titlesEn || [''],
-        titlesGe: item.titlesGe || [''],
-        href: item.href || [''],
+        titlesEn: item.titlesEn || [""],
+        titlesGe: item.titlesGe || [""],
+        href: item.href || [""],
         images: item.images || [null],
       });
 
@@ -146,9 +146,9 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
   const addItem = () => {
     setFormData((prev) => ({
       ...prev,
-      titlesEn: [...prev.titlesEn, ''],
-      titlesGe: [...prev.titlesGe, ''],
-      href: [...prev.href, ''],
+      titlesEn: [...prev.titlesEn, ""],
+      titlesGe: [...prev.titlesGe, ""],
+      href: [...prev.href, ""],
       images: [...prev.images, null],
     }));
   };
@@ -164,7 +164,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
       }));
       if (imageName) {
         try {
-          const response = await axiosInstance.post(
+          await axiosInstance.post(
             `${API_ADMIN_URL}delete-image`,
             { imageName },
             {
@@ -173,6 +173,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
               },
             }
           );
+          
         } catch (error) {
           console.error("Error:", error);
         }
@@ -261,7 +262,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
   return (
     <form onSubmit={handleSubmit} className="item-form">
       <label>
-        Title (English):
+        Title (Eng):
         <input
           type="text"
           name="titleEn"
@@ -270,7 +271,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
         />
       </label>
       <label>
-        Title (Georgian):
+        Title (Geo):
         <input
           type="text"
           name="titleGe"
@@ -292,7 +293,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
           {formData.images.map((_, index) => (
             <div key={index} className="multi-item" ref={multipleItemsRef}>
               <label>
-                Title (English):
+                Name (Eng):
                 <input
                   type="text"
                   value={formData.titlesEn[index]}
@@ -302,7 +303,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
                 />
               </label>
               <label>
-                Title (Georgian):
+                Name (Geo):
                 <input
                   type="text"
                   value={formData.titlesGe[index]}
@@ -336,12 +337,13 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
                     formData.images.length
                   )
                 }
+                className="remove-item-btn"
               >
                 Remove
               </button>
             </div>
           ))}
-          <button type="button" onClick={addItem}>
+          <button type="button" onClick={addItem} className="add-item-btn">
             Add Item
           </button>
         </>
@@ -351,7 +353,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
             <>
               <div ref={singleItemBodyRef}>
                 <label>
-                  Body (English):
+                  Body (Eng):
                   <Editor
                     apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
                     value={formData.bodyEn}
@@ -359,20 +361,11 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
                       handleEditorChange(content, "en")
                     }
                     init={{
+                      height: 280,
                       plugins:
-                        "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown",
+                        "anchor autolink charmap codesample emoticons image link lists media table visualblocks checklist mediaembed casechange export formatpainter pageembed linkchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tableofcontents footnotes typography inlinecss markdown",
                       toolbar:
-                        "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
-                      tinycomments_mode: "embedded",
-                      tinycomments_author: "Author name",
-                      mergetags_list: [
-                        { value: "First.Name", title: "First Name" },
-                        { value: "Email", title: "Email" },
-                      ],
-                      ai_request: (request, respondWith) =>
-                        respondWith.string(() =>
-                          Promise.reject("See docs to implement AI Assistant")
-                        ),
+                        "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | addcomment showcomments | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
                     }}
                     onInit={(evt, editor) => {
                       console.log("Editor is ready to use!", editor);
@@ -380,7 +373,7 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
                   />
                 </label>
                 <label>
-                  Body (Georgian):
+                  Body (Geo):
                   <Editor
                     apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
                     value={formData.bodyGe}
@@ -388,20 +381,11 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
                       handleEditorChange(content, "ge")
                     }
                     init={{
+                      height: 280,
                       plugins:
-                        "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown",
+                        "anchor autolink charmap codesample emoticons image link lists media table visualblocks checklist mediaembed casechange export formatpainter pageembed linkchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tableofcontents footnotes typography inlinecss markdown",
                       toolbar:
-                        "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
-                      tinycomments_mode: "embedded",
-                      tinycomments_author: "Author name",
-                      mergetags_list: [
-                        { value: "First.Name", title: "First Name" },
-                        { value: "Email", title: "Email" },
-                      ],
-                      ai_request: (request, respondWith) =>
-                        respondWith.string(() =>
-                          Promise.reject("See docs to implement AI Assistant")
-                        ),
+                        "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | addcomment showcomments | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
                     }}
                     onInit={(evt, editor) => {
                       console.log("Editor is ready to use!", editor);
@@ -414,8 +398,10 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
         </>
       )}
 
-      <button type="submit">{isEditMode ? "Update" : "Add"} Item</button>
-      <button type="button" onClick={onCancel}>
+      <button type="submit" className="submit-btn">
+        {isEditMode ? "Update" : "Add"} Item
+      </button>
+      <button type="button" onClick={onCancel} className="cancel-btn">
         Cancel
       </button>
     </form>
