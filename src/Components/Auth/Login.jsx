@@ -33,17 +33,13 @@ function Login() {
     event.preventDefault();
     try {
       window.grecaptcha.ready(() => {
-        window.grecaptcha.execute(process.env.REACT_APP_SITE_KEY, { action: 'submit' }).then(async token => {
-          console.log("reCAPTCHA token:", token);
-          
+        window.grecaptcha.execute(process.env.REACT_APP_SITE_KEY, { action: 'submit' }).then(async token => {          
           try {
             const response = await axios.post(`${process.env.REACT_APP_API_KEY_ADMIN}login`, {
               email,
               password,
               recaptcha_token: token
             });
-
-            console.log("Login response:", response.data);
 
             if (response.data.success) {
               Cookies.set("token", response.data.access_token, {

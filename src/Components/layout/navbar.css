@@ -1,4 +1,3 @@
-/* Style for the burger menu button */
 .burger-menu {
     font-size: 24px;
     border: none;
@@ -9,7 +8,6 @@
     left: 15px;
   }
   
-  /* Navbar styles */
   .navbar {
     position: fixed;
     top: 0;
@@ -30,7 +28,6 @@
     width: 0;
   }
   
-  /* Close button styles */
   .close-btn {
     font-size: 36px;
     color: #fff;
@@ -40,7 +37,6 @@
     cursor: pointer;
   }
   
-  /* Style for links */
   .navbar a {
     padding: 10px 15px;
     text-decoration: none;
@@ -50,12 +46,10 @@
     transition: 0.3s;
   }
   
-  /* Hover effect */
   .navbar a:hover {
     background-color: #575757;
   }
   
-  /* Active link styles */
   .navbar .active-link {
     color: red;
     font-weight: bold;
