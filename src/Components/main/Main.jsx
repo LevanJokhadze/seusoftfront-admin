@@ -39,7 +39,6 @@ const main = ()=> {
   );
 }
 
-// This is a wrapper component to protect routes
 function ProtectedRoutes({ children }) {
   const authToken = Cookies.get('token');
 

@@ -12,7 +12,6 @@ const getToken = () => {
   return Cookies.get('token');
 };
 
-// Axios instance with default headers
 const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
@@ -39,6 +38,7 @@ const Dashboard = () => {
   const [currentItem, setCurrentItem] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [language, setLanguage] = useState('en');
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -93,10 +93,17 @@ const Dashboard = () => {
     setCurrentItem(null);
   };
 
+  const switchLanguage = (lang) => {
+    setLanguage(lang);
+  };
+
   return (
-    
     <div className="dashboard">
       <h1>Dashboard</h1>
+      <div className="language-switcher">
+        <button onClick={() => switchLanguage('en')}>English</button>
+        <button onClick={() => switchLanguage('ge')}>Georgian</button>
+      </div>
       {error && <div className="error-message">{error}</div>}
       <div className="item-list">
         {isLoading ? (
@@ -104,12 +111,20 @@ const Dashboard = () => {
         ) : data.length > 0 ? (
           data.map(item => (
             <div key={item.id} className="item">
-              <h2>{item.title}</h2>
-              {item.body ? (
-                <div dangerouslySetInnerHTML={{ __html: item.body }} />
+              <h2>{language === 'en' ? item.titleEn : item.titleGe}</h2>
+              {(language === 'en' ? item.bodyEn : item.bodyGe) ? (
+                <div dangerouslySetInnerHTML={{ __html: language === 'en' ? item.bodyEn : item.bodyGe }} />
               ) : (
                 <div className="multi-item-list">
-                  {item.titles && item.titles.map((title, index) => (
+                  {language === 'en' && item.titlesEn.map((title, index) => (
+                    <div key={index} className="multi-item">
+                      <h3>{title}</h3>
+                      {item.images && item.images[index] && (
+                        <img src={`${API_BASE_URL_Web}${item.images[index]}`} alt={title} className="im"/>
+                      )}
+                    </div>
+                  ))}
+                  {language === 'ge' && item.titlesGe.map((title, index) => (
                     <div key={index} className="multi-item">
                       <h3>{title}</h3>
                       {item.images && item.images[index] && (
@@ -124,7 +139,7 @@ const Dashboard = () => {
                 <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
               </div>
             </div>
-          ))      
+          ))
         ) : (
           <p>No items found.</p>
         )}
@@ -138,6 +153,7 @@ const Dashboard = () => {
           onSubmit={isEditMode ? handleUpdateItem : handleAddItem}
           onCancel={toggleFormVisibility}
           isEditMode={isEditMode}
+          language={language}
         />
       )}
     </div>

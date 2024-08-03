@@ -7,7 +7,7 @@ import contactsIcon from "../../assets/navbar/contacts.png";
 import logoutIcon from "../../assets/navbar/logout.png";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false); // Start with the navbar closed
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);

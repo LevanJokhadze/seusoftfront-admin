@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import axios from "axios"; // Make sure to install axios: npm install axios
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -36,7 +36,6 @@ function Login() {
         window.grecaptcha.execute(process.env.REACT_APP_SITE_KEY, { action: 'submit' }).then(async token => {
           console.log("reCAPTCHA token:", token);
           
-          // Send email, password, and reCAPTCHA token to backend
           try {
             const response = await axios.post(`${process.env.REACT_APP_API_KEY_ADMIN}login`, {
               email,
@@ -47,19 +46,16 @@ function Login() {
             console.log("Login response:", response.data);
 
             if (response.data.success) {
-              // Assuming the backend sends a token upon successful login
               Cookies.set("token", response.data.access_token, {
                 secure: true,
                 sameSite: "strict",
               });
               navigate("/dashboard");
             } else {
-              // Handle login failure (e.g., show error message)
               console.error("Login failed:", response.data.message);
             }
           } catch (error) {
             console.error("Error during login:", error);
-            // Handle error (e.g., show error message to user)
           }
         });
       });
