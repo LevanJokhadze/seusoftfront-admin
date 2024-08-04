@@ -343,8 +343,8 @@ const ItemForm = ({ item, onSubmit, onCancel, isEditMode }) => {
               </button>
             </div>
           ))}
-          <button type="button" onClick={addItem} className="add-item-btn">
-            Add Item
+          <button type="button" onClick={addItem} className="add-item-btn" style={{display: "block", marginBottom: "5px", marginLeft: "auto", marginRight:"auto"}}>
+            New Item
           </button>
         </>
       ) : (

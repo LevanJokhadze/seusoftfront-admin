@@ -39,25 +39,14 @@ const Navbar = () => {
           Dashboard
         </NavLink>
         </div>
-
         <div className="itemNav">
         <img src={contactsIcon} className='navIcons' alt='img'/>
         <NavLink 
-          to="/contacts" 
+          to="/info" 
           className={({ isActive }) => (isActive ? 'active-link' : '')} 
           onClick={toggleNavbar}
         >
-          Contacts
-        </NavLink>
-        </div>
-        <div className="itemNav">
-        <img src={contactsIcon} className='navIcons' alt='img'/>
-        <NavLink 
-          to="/uContacts" 
-          className={({ isActive }) => (isActive ? 'active-link' : '')} 
-          onClick={toggleNavbar}
-        >
-          Ucontacts
+          Information
         </NavLink>
         </div>
         <div className="itemNav">
