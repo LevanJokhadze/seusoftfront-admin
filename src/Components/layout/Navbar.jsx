@@ -49,7 +49,7 @@ const Navbar = () => {
           Information
         </NavLink>
         </div>
-        <div className="itemNav">
+        {/* <div className="itemNav">
         <img src={contactsIcon} className='navIcons' alt='img'/>
         <NavLink 
           to="/footer" 
@@ -58,7 +58,7 @@ const Navbar = () => {
         >
           Footer
         </NavLink>
-        </div>
+        </div> */}
         <div className="itemNav">
         <img src={logoutIcon} className='navIcons' alt='img'/>
         <NavLink 
